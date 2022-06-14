@@ -13,7 +13,8 @@ extension ViewController {
     func presentUIAlertController(
         withTitle title: String?,
         andMessage message: String?,
-        style: UIAlertController.Style
+        style: UIAlertController.Style,
+        completionHandler: @escaping (String) -> Void
     ) {
         
         let alertController = UIAlertController(
@@ -34,7 +35,9 @@ extension ViewController {
             guard let cityName = textField?.text else { return }
             
             if !cityName.isEmpty {
-                print("search info for the \(cityName)")
+//                self.networkWeatherManager.fetchCurrentWeather(for: cityName)
+                let city = cityName.split(separator: " ").joined(separator: "%20")
+                completionHandler(city)
             }
         }
         
