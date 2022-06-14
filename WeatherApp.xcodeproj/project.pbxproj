@@ -56,12 +56,11 @@
 		2BB55342285888EE00AF4B8A /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				2BB5535B28588DA200AF4B8A /* Models */,
+				2BB5535A28588D9200AF4B8A /* ViewControllers */,
+				2BB5535928588D7D00AF4B8A /* Views */,
 				2BB553572858892A00AF4B8A /* Resources */,
-				2BB55343285888EE00AF4B8A /* AppDelegate.swift */,
-				2BB55345285888EE00AF4B8A /* SceneDelegate.swift */,
-				2BB55347285888EE00AF4B8A /* ViewController.swift */,
-				2BB55349285888EE00AF4B8A /* Main.storyboard */,
-				2BB5534E285888EF00AF4B8A /* LaunchScreen.storyboard */,
+				2BB5535828588D5B00AF4B8A /* App supporting files */,
 			);
 			path = WeatherApp;
 			sourceTree = "<group>";
@@ -73,6 +72,39 @@
 				2BB55351285888EF00AF4B8A /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		2BB5535828588D5B00AF4B8A /* App supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				2BB55343285888EE00AF4B8A /* AppDelegate.swift */,
+				2BB55345285888EE00AF4B8A /* SceneDelegate.swift */,
+			);
+			path = "App supporting files";
+			sourceTree = "<group>";
+		};
+		2BB5535928588D7D00AF4B8A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BB55349285888EE00AF4B8A /* Main.storyboard */,
+				2BB5534E285888EF00AF4B8A /* LaunchScreen.storyboard */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BB5535A28588D9200AF4B8A /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				2BB55347285888EE00AF4B8A /* ViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		2BB5535B28588DA200AF4B8A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
