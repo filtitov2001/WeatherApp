@@ -11,11 +11,19 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var weatherIconImageView: UIImageView!
+    @IBOutlet weak var cityLabel: UILabel!
+    @IBOutlet weak var temperatureLabel: UILabel!
+    @IBOutlet weak var feelsLikeTemperatureLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func searchButtonPressed(_ sender: UIButton) {
+        presentUIAlertController(withTitle: "Enter city name", andMessage: nil, style: .alert)
+    }
+    
 }
 

@@ -11,8 +11,8 @@ import UIKit
 
 extension ViewController {
     func presentUIAlertController(
-        withTitle title: String,
-        andMessage message: String,
+        withTitle title: String?,
+        andMessage message: String?,
         style: UIAlertController.Style
     ) {
         
