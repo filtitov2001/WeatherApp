@@ -8,6 +8,7 @@
 
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
 
@@ -17,6 +18,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var feelsLikeTemperatureLabel: UILabel!
     
     var networkWeatherManager = NetworkManager()
+    lazy var locationManager: CLLocationManager = {
+        let lm = CLLocationManager()
+        lm.delegate = self
+        lm.desiredAccuracy = kCLLocationAccuracyKilometer
+        lm.requestWhenInUseAuthorization()
+        
+        return lm
+    }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +36,15 @@ class ViewController: UIViewController {
             self.updateUI(with: currentWeather)
         }
         
-        networkWeatherManager.fetchCurrentWeather(for: "London")
-        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestLocation()
+        }
         
     }
 
     @IBAction func searchButtonPressed(_ sender: UIButton) {
         presentUIAlertController(withTitle: "Enter city name", andMessage: nil, style: .alert) { [unowned self] cityName in
-            self.networkWeatherManager.fetchCurrentWeather(for: cityName)
+            self.networkWeatherManager.fetchCurrentWeather(forRequestType: .cityName(city: cityName))
         }
     }
     
@@ -48,3 +59,17 @@ class ViewController: UIViewController {
     
 }
 
+// MARK: CLLocationManagerDelegate
+extension ViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        let latitude = location.coordinate.latitude
+        let longitude = location.coordinate.longitude
+        
+        networkWeatherManager.fetchCurrentWeather(forRequestType: .coordinate(latitude: latitude, longitude: longitude))
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
+}

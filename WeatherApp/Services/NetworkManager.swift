@@ -8,15 +8,34 @@
 
 
 import Foundation
+import CoreLocation
 
 class NetworkManager {
     
+    enum RequestType {
+        case cityName(city: String)
+        case coordinate(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
+    }
+    
     var onComplition: ((CurrentWeather) -> Void)?
     
-    func fetchCurrentWeather(for city: String) {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&apiKey=\(apiKey)&units=metric"
+    func fetchCurrentWeather(forRequestType requestType: RequestType) {
+        var urlString = ""
         
-        guard let url = URL(string: urlString) else { return }
+        switch requestType {
+            
+        case .cityName(let city):
+            urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&apiKey=\(apiKey)&units=metric"
+        case .coordinate(let latitude, let longitude):
+            urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&apiKey=\(apiKey)&units=metric"
+            
+        }
+        
+        performRequest(withURLString: urlString)
+    }
+    
+    fileprivate func performRequest(withURLString URLString: String) {
+        guard let url = URL(string: URLString) else { return }
         
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: url) { data, response, error in
@@ -30,7 +49,7 @@ class NetworkManager {
         task.resume()
     }
     
-    func parseJSON(withData data: Data) -> CurrentWeather? {
+    fileprivate func parseJSON(withData data: Data) -> CurrentWeather? {
         let decoder = JSONDecoder()
         
         do {
