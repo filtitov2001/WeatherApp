@@ -14,6 +14,8 @@
 		2BB5534D285888EF00AF4B8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2BB5534C285888EF00AF4B8A /* Assets.xcassets */; };
 		2BB55350285888EF00AF4B8A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BB5534E285888EF00AF4B8A /* LaunchScreen.storyboard */; };
 		2BB5535E28588E5900AF4B8A /* ViewController + UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB5535D28588E5900AF4B8A /* ViewController + UIAlertController.swift */; };
+		2BB553612858A0FD00AF4B8A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB553602858A0FD00AF4B8A /* NetworkManager.swift */; };
+		2BB553632858A2A200AF4B8A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB553622858A2A200AF4B8A /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		2BB5534F285888EF00AF4B8A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2BB55351285888EF00AF4B8A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2BB5535D28588E5900AF4B8A /* ViewController + UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController + UIAlertController.swift"; sourceTree = "<group>"; };
+		2BB553602858A0FD00AF4B8A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		2BB553622858A2A200AF4B8A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 		2BB55342285888EE00AF4B8A /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				2BB5535F2858A0E200AF4B8A /* Services */,
 				2BB5535C28588E3500AF4B8A /* Extensions  */,
 				2BB5535B28588DA200AF4B8A /* Models */,
 				2BB5535A28588D9200AF4B8A /* ViewControllers */,
@@ -82,6 +87,7 @@
 			children = (
 				2BB55343285888EE00AF4B8A /* AppDelegate.swift */,
 				2BB55345285888EE00AF4B8A /* SceneDelegate.swift */,
+				2BB553622858A2A200AF4B8A /* Constants.swift */,
 			);
 			path = "App supporting files";
 			sourceTree = "<group>";
@@ -116,6 +122,14 @@
 				2BB5535D28588E5900AF4B8A /* ViewController + UIAlertController.swift */,
 			);
 			path = "Extensions ";
+			sourceTree = "<group>";
+		};
+		2BB5535F2858A0E200AF4B8A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2BB553602858A0FD00AF4B8A /* NetworkManager.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,8 +205,10 @@
 			files = (
 				2BB55348285888EE00AF4B8A /* ViewController.swift in Sources */,
 				2BB55344285888EE00AF4B8A /* AppDelegate.swift in Sources */,
+				2BB553612858A0FD00AF4B8A /* NetworkManager.swift in Sources */,
 				2BB55346285888EE00AF4B8A /* SceneDelegate.swift in Sources */,
 				2BB5535E28588E5900AF4B8A /* ViewController + UIAlertController.swift in Sources */,
+				2BB553632858A2A200AF4B8A /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
