@@ -21,13 +21,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        networkWeatherManager.onComplition = { currentWeather in
-            print(currentWeather.cityName)
-        }
-        
+        networkWeatherManager.delegate = self
         networkWeatherManager.fetchCurrentWeather(for: "London")
-        
-        
     }
 
     @IBAction func searchButtonPressed(_ sender: UIButton) {
@@ -38,3 +33,9 @@ class ViewController: UIViewController {
     
 }
 
+extension ViewController: NetworkManagerDelegate {
+    func updateInterface(_: NetworkManager, with currentWeather: CurrentWeather) {
+        print(currentWeather.cityName)
+    }
+    
+}
