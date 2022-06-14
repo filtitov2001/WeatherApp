@@ -60,8 +60,8 @@
                                                         <color key="textColor" name="infoColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="23 °C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gRL-QD-IFk">
-                                                        <rect key="frame" x="78.666666666666657" y="0.0" width="41.666666666666657" height="19.333333333333332"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="23 °C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gRL-QD-IFk">
+                                                        <rect key="frame" x="78.666666666666657" y="0.0" width="42" height="20"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <color key="textColor" name="infoColor"/>
                                                         <nil key="highlightedColor"/>
@@ -114,6 +114,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cityLabel" destination="JbK-Ff-yRt" id="2KE-Mf-zIb"/>
                         <outlet property="feelsLikeTemperatureLabel" destination="gRL-QD-IFk" id="Mk8-ax-pUT"/>
                         <outlet property="temperatureLabel" destination="dM3-Jf-ehP" id="kaT-sd-DI3"/>
                         <outlet property="weatherIconImageView" destination="mfY-6K-tkB" id="SQb-lY-g8d"/>
