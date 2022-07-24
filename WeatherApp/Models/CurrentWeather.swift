@@ -1,5 +1,5 @@
 //
-//  CurrentWeather.swift
+//  CurrentWeatherData.swift
 //  WeatherApp
 //
 //  Created by Felix Titov on 6/14/22.
@@ -9,38 +9,45 @@
 
 import Foundation
 
-struct CurrentWeather {
-    let cityName: String
-    let temperature: Double
+struct CurrentWeather: Decodable {
+    let name: String
+    let main: Main
+    let weather: [Weather]
     
     var temperatureString: String {
-        String(format: "%.0f", temperature)
+        String(format: "%.0f", main.temp)
     }
     var feelsLikeTemperatureString: String {
-       String(format: "%.0f", feelsLikeTemperature)
+        String(format: "%.0f", main.feelsLike)
     }
-    
-    let feelsLikeTemperature: Double
-    let conditionCode: Int
     
     var systemIconNameString: String {
-        switch conditionCode {
-            case 200...232: return "cloud.bolt.raint.fill"
-            case 300...321: return "cloud.drizzle.fill"
-            case 500...531: return "cloud.rain.fill"
-            case 600...622: return "cloud.snow.fill"
-            case 701...781: return "smoke.fill"
-            case 800: return "sun.min.fill"
-            case 801...804: return "cloud.fill"
+        guard let weatherCode = weather.first?.id else { return "nosign" }
+        
+        switch weatherCode {
+        case 200...232: return "cloud.bolt.raint.fill"
+        case 300...321: return "cloud.drizzle.fill"
+        case 500...531: return "cloud.rain.fill"
+        case 600...622: return "cloud.snow.fill"
+        case 701...781: return "smoke.fill"
+        case 800: return "sun.max.fill"
+        case 801...804: return "cloud.fill"
             
-            default: return "nosign"
+        default: return "nosign"
         }
     }
+}
+
+struct Main: Decodable {
+    let temp: Double
+    let feelsLike: Double
     
-    init?(currentWeatherData: CurrentWeatherData) {
-        cityName = currentWeatherData.name
-        temperature = currentWeatherData.main.temp
-        feelsLikeTemperature = currentWeatherData.main.feelsLike
-        conditionCode = currentWeatherData.weather.first!.id
+    enum CodingKeys: String, CodingKey {
+        case temp
+        case feelsLike = "feels_like"
     }
+}
+
+struct Weather: Decodable {
+    let id: Int
 }
