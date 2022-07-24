@@ -18,46 +18,50 @@ enum RequestType {
     var urlString: String {
         switch self {
         case .cityName(let city):
-            return "https://api.openweathermap.org/data/2.5/weather?q=\(city)&apiKey=\(API.apiKey)&units=metric"
+            return API.url.rawValue + API.version.rawValue + "?q=\(city)&apiKey=\(API.apiKey)&units=\(API.units)"
         case .coordinate(let latitude, let longitude):
-            return "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&apiKey=\(API.apiKey)&units=metric"
+            return API.url.rawValue + API.version.rawValue + "?lat=\(latitude)&lon=\(longitude)&apiKey=\(API.apiKey)&units=\(API.units)"
         }
     }
+}
+
+enum NetworkError: Error {
+    case invalidURL
+    case noData
+    case decodingError
+    case serverError
 }
 
 class NetworkManager {
     
     static let shared = NetworkManager()
     
-    var onComplition: ((CurrentWeather) -> Void)?
+    private init() {}
     
-    func fetchCurrentWeather(forRequestType requestType: RequestType) {
-        guard let url = URL(string: requestType.urlString) else { return }
-        
-        //     performRequest(withURLString: urlString)
-    }
-    
-//    fileprivate func performRequest(withURLString URLString: String) {
-//        guard let url = URL(string: URLString) else { return }
-//
-//        URLSession.shared.dataTask(with: url) { data, response, error in
-//            if let data = data {
-//                if let currentWeather = self.parseJSON(withData: data) {
-//                    self.onComplition?(currentWeather)
-//                }
-//            }
-//        }.resume()
-//
-//    }
-    
-    fileprivate func parseJSON<T: Decodable>(withData data: Data, completion: (Result<T, Error>) -> Void) {
-        do {
-            let currentWeather = try JSONDecoder().decode(T.self, from: data)
-            completion(.success(currentWeather))
-        } catch let error {
-            completion(.failure(error))
+    func fetchCurrentWeather<T: Decodable>(forRequestType requestType: RequestType, completion: @escaping (Result<T, NetworkError>) -> Void) {
+        guard let url = URL(string: requestType.urlString) else {
+            completion(.failure(.invalidURL))
+            return
         }
         
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let error = error {
+                completion(.failure(error as? NetworkError ?? .serverError))
+            }
+            
+            guard let data = data else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            do {
+                let currentWeather = try JSONDecoder().decode(T.self, from: data)
+                completion(.success(currentWeather))
+            } catch let error {
+                completion(.failure(error as? NetworkError ?? .decodingError))
+            }
+            
+        }.resume()
     }
 }
 

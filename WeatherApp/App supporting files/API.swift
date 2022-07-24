@@ -10,10 +10,12 @@
 import Foundation
 
 enum API: String {
-    case url = ""
-    case version = "s"
+    case url = "https://api.openweathermap.org/"
+    case version = "data/2.5/weather"
     
     case apiKey = "7748096dbe79af4e81e8847553e4d0f1"
+    case units = "metrics"
+    
 }
 
 
