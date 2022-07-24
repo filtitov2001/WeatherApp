@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B12A662288D832E00A6DF1F /* API.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B12A661288D832E00A6DF1F /* API.plist */; };
 		2BB55344285888EE00AF4B8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB55343285888EE00AF4B8A /* AppDelegate.swift */; };
 		2BB55346285888EE00AF4B8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB55345285888EE00AF4B8A /* SceneDelegate.swift */; };
 		2BB55348285888EE00AF4B8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB55347285888EE00AF4B8A /* ViewController.swift */; };
@@ -21,7 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2B12A661288D832E00A6DF1F /* API.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = API.plist; sourceTree = "<group>"; };
 		2BB55340285888EE00AF4B8A /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BB55343285888EE00AF4B8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2BB55345285888EE00AF4B8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,7 +90,6 @@
 				2BB55343285888EE00AF4B8A /* AppDelegate.swift */,
 				2BB55345285888EE00AF4B8A /* SceneDelegate.swift */,
 				2BB553622858A2A200AF4B8A /* API.swift */,
-				2B12A661288D832E00A6DF1F /* API.plist */,
 			);
 			path = "App supporting files";
 			sourceTree = "<group>";
@@ -197,7 +194,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BB55350285888EF00AF4B8A /* LaunchScreen.storyboard in Resources */,
-				2B12A662288D832E00A6DF1F /* API.plist in Resources */,
 				2BB5534D285888EF00AF4B8A /* Assets.xcassets in Resources */,
 				2BB5534B285888EE00AF4B8A /* Main.storyboard in Resources */,
 			);

@@ -18,18 +18,19 @@ enum RequestType {
     var urlString: String {
         switch self {
         case .cityName(let city):
-            return API.url.rawValue + API.version.rawValue + "?q=\(city)&apiKey=\(API.apiKey)&units=\(API.units)"
+            return API.url.rawValue + API.version.rawValue + "?q=\(city)&apiKey=\(API.apiKey)&units=\(API.units.rawValue)"
+            
         case .coordinate(let latitude, let longitude):
-            return API.url.rawValue + API.version.rawValue + "?lat=\(latitude)&lon=\(longitude)&apiKey=\(API.apiKey)&units=\(API.units)"
+            return API.url.rawValue + API.version.rawValue + "?lat=\(latitude)&lon=\(longitude)&apiKey=\(API.apiKey)&units=\(API.units.rawValue)"
         }
     }
 }
 
-enum NetworkError: Error {
-    case invalidURL
-    case noData
-    case decodingError
-    case serverError
+enum NetworkError: String, Error {
+    case invalidURL = "Invalid URL!"
+    case noData = "Unnable to fetch data!"
+    case decodingError = "Decoding data error!"
+    case serverError = "Server error!"
 }
 
 class NetworkManager {
@@ -38,13 +39,32 @@ class NetworkManager {
     
     private init() {}
     
-    func fetchCurrentWeather<T: Decodable>(forRequestType requestType: RequestType, completion: @escaping (Result<T, NetworkError>) -> Void) {
+    func fetchCurrentWeather<T: Decodable>(dataType: T.Type, forRequestType requestType: RequestType, completion: @escaping (Result<T, NetworkError>) -> Void) {
         guard let url = URL(string: requestType.urlString) else {
             completion(.failure(.invalidURL))
             return
         }
         
-        URLSession.shared.dataTask(with: url) { data, _, error in
+        performRequest(dataType: dataType, withURL: url) { result in
+            switch result {
+                
+            case .success(let currentWeather):
+                DispatchQueue.main.async {
+                    completion(.success(currentWeather))
+                }
+                
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                    
+                }
+            }
+        }
+    }
+    
+    fileprivate func performRequest<T: Decodable>(dataType: T.Type, withURL url: URL, completion: @escaping (Result<T, NetworkError>) -> Void) {
+
+        URLSession.shared.dataTask(with: url) { [unowned self] data, response, error in
             if let error = error {
                 completion(.failure(error as? NetworkError ?? .serverError))
             }
@@ -54,14 +74,21 @@ class NetworkManager {
                 return
             }
             
-            do {
-                let currentWeather = try JSONDecoder().decode(T.self, from: data)
-                completion(.success(currentWeather))
-            } catch let error {
-                completion(.failure(error as? NetworkError ?? .decodingError))
+            self.parseJSON(withData: data) { result in
+                completion(result)
             }
-            
         }.resume()
+
+    }
+    
+    fileprivate func parseJSON<T: Decodable>(withData data: Data, completion: (Result<T, NetworkError>) -> Void) {
+        do {
+            let currentWeather = try JSONDecoder().decode(T.self, from: data)
+            completion(.success(currentWeather))
+        } catch let error {
+            completion(.failure(error as? NetworkError ?? .decodingError))
+        }
+        
     }
 }
 

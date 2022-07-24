@@ -13,8 +13,11 @@ enum API: String {
     case url = "https://api.openweathermap.org/"
     case version = "data/2.5/weather"
     
-    case apiKey = "7748096dbe79af4e81e8847553e4d0f1"
-    case units = "metrics"
+    case units = "metric"
+    
+    static var apiKey: String {
+        return Bundle.main.object(forInfoDictionaryKey: "apiKey") as! String
+    }
     
 }
 

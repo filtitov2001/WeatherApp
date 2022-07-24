@@ -13,11 +13,15 @@ import CoreLocation
 class ViewController: UIViewController {
 
     @IBOutlet weak var weatherIconImageView: UIImageView!
+    
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var feelsLikeTemperatureLabel: UILabel!
     
-    private var networkWeatherManager = NetworkManager()
+    @IBOutlet weak var temperatureView: UIView!
+    @IBOutlet weak var feelsLikeView: UIView!
+    @IBOutlet weak var cityView: UIView!
+    
     
     private lazy var locationManager: CLLocationManager = {
         let locationManager = CLLocationManager()
@@ -28,49 +32,99 @@ class ViewController: UIViewController {
         return locationManager
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UIView.animate(withDuration: 1,
-                       delay: 0,
-                       options: [.autoreverse, .repeat]
-        ) {
-            self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
-        }
+        setupViews()
 
-        
-//        UIView.animate(withDuration: 5) {
-//            self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1)
-//            self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
-//        }
-        
-//        networkWeatherManager.onComplition = { [weak self] currentWeather in
-//            guard let self = self else { return }
-//            self.updateUI(with: currentWeather)
-//        }
-//        
-//        if CLLocationManager.locationServicesEnabled() {
-//            locationManager.requestLocation()
-//        }
-        
+        locationManager.delegate = self
+       
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestLocation()
+        }
     }
+    
 
     @IBAction func searchButtonPressed(_ sender: UIButton) {
-        presentUIAlertController(withTitle: "Enter city name", andMessage: nil, style: .alert) { [unowned self] cityName in
-            self.networkWeatherManager.fetchCurrentWeather(forRequestType: .cityName(city: cityName))
+        presentUIAlertController(
+            withTitle: "Enter city name",
+            andMessage: nil,
+            style: .alert,
+            withSearch: true
+        ) { [unowned self] cityName in
+            
+            self.getData(requestType: .cityName(city: cityName))
         }
     }
     
-    func updateUI(with weather: CurrentWeather) {
-        DispatchQueue.main.async {
-     //       self.cityLabel.text = weather.cityName
-            self.temperatureLabel.text = weather.temperatureString
-            self.feelsLikeTemperatureLabel.text = weather.feelsLikeTemperatureString + " °C"
-            self.weatherIconImageView.image = UIImage(systemName: weather.systemIconNameString)
+    //MARK: - Fetching Data
+    private func getData(requestType: RequestType) {
+        NetworkManager.shared.fetchCurrentWeather(
+            dataType: CurrentWeather.self,
+            forRequestType: requestType
+        ) { [unowned self] result in
+            switch result {
+                
+            case .success(let currentWeather):
+                self.startAnimating()
+                self.updateUI(with: currentWeather)
+            case .failure(let error):
+                self.presentUIAlertController(
+                    withTitle: "Error",
+                    andMessage: error.rawValue,
+                    style: .alert,
+                    withSearch: false,
+                    completionHandler: nil
+                )
+            }
+        }
+    }
+}
+
+//MARK: - Work with UI
+extension ViewController {
+    private func updateUI(with weather: CurrentWeather) {
+        self.cityLabel.text = weather.name
+        self.temperatureLabel.text = weather.temperatureString + " °C"
+        self.feelsLikeTemperatureLabel.text = "Feels like \(weather.feelsLikeTemperatureString) °C"
+        self.weatherIconImageView.image = UIImage(systemName: weather.systemIconNameString)
+        
+        stopAnimating()
+    }
+    
+    private func setupViews() {
+        let cornerRadius: CGFloat = 10
+        
+        weatherIconImageView.layer.cornerRadius = cornerRadius
+        
+        cityView.layer.cornerRadius = cornerRadius
+        temperatureView.layer.cornerRadius = cornerRadius
+        feelsLikeView.layer.cornerRadius = cornerRadius
+
+    }
+    
+    private func startAnimating() {
+        UIView.animate(
+            withDuration: 1,
+            delay: 0,
+            options: [.autoreverse, .repeat]) {
+                self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
+                self.feelsLikeView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
+                self.cityView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
+                self.temperatureView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
+                
         }
     }
     
+    private func stopAnimating() {
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0) {
+                self.weatherIconImageView.backgroundColor = .clear
+                self.cityView.backgroundColor = .clear
+                self.temperatureView.backgroundColor = .clear
+                self.feelsLikeView.backgroundColor = .clear
+        }
+    }
 }
 
 // MARK: CLLocationManagerDelegate
@@ -80,7 +134,8 @@ extension ViewController: CLLocationManagerDelegate {
         let latitude = location.coordinate.latitude
         let longitude = location.coordinate.longitude
         
-        networkWeatherManager.fetchCurrentWeather(forRequestType: .coordinate(latitude: latitude, longitude: longitude))
+        getData(requestType: .coordinate(latitude: latitude, longitude: longitude))
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
