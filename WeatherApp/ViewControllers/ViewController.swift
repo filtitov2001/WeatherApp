@@ -17,28 +17,42 @@ class ViewController: UIViewController {
     @IBOutlet weak var temperatureLabel: UILabel!
     @IBOutlet weak var feelsLikeTemperatureLabel: UILabel!
     
-    var networkWeatherManager = NetworkManager()
-    lazy var locationManager: CLLocationManager = {
-        let lm = CLLocationManager()
-        lm.delegate = self
-        lm.desiredAccuracy = kCLLocationAccuracyKilometer
-        lm.requestWhenInUseAuthorization()
+    private var networkWeatherManager = NetworkManager()
+    
+    private lazy var locationManager: CLLocationManager = {
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.requestWhenInUseAuthorization()
         
-        return lm
+        return locationManager
     }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        networkWeatherManager.onComplition = { [weak self] currentWeather in
-            guard let self = self else { return }
-            self.updateUI(with: currentWeather)
+        UIView.animate(withDuration: 1,
+                       delay: 0,
+                       options: [.autoreverse, .repeat]
+        ) {
+            self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
         }
+
         
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.requestLocation()
-        }
+//        UIView.animate(withDuration: 5) {
+//            self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1)
+//            self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
+//        }
+        
+//        networkWeatherManager.onComplition = { [weak self] currentWeather in
+//            guard let self = self else { return }
+//            self.updateUI(with: currentWeather)
+//        }
+//        
+//        if CLLocationManager.locationServicesEnabled() {
+//            locationManager.requestLocation()
+//        }
         
     }
 
@@ -50,7 +64,7 @@ class ViewController: UIViewController {
     
     func updateUI(with weather: CurrentWeather) {
         DispatchQueue.main.async {
-            self.cityLabel.text = weather.cityName
+     //       self.cityLabel.text = weather.cityName
             self.temperatureLabel.text = weather.temperatureString
             self.feelsLikeTemperatureLabel.text = weather.feelsLikeTemperatureString + " °C"
             self.weatherIconImageView.image = UIImage(systemName: weather.systemIconNameString)
