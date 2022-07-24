@@ -9,4 +9,11 @@
 
 import Foundation
 
-let apiKey = "7748096dbe79af4e81e8847553e4d0f1"
+enum API: String {
+    case url = ""
+    case version = "s"
+    
+    case apiKey = "7748096dbe79af4e81e8847553e4d0f1"
+}
+
+
