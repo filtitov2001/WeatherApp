@@ -10,52 +10,60 @@
 import Foundation
 import CoreLocation
 
+enum RequestType {
+
+    case cityName(city: String)
+    case coordinate(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
+    
+    var urlString: String {
+        switch self {
+        case .cityName(let city):
+            return "https://api.openweathermap.org/data/2.5/weather?q=\(city)&apiKey=\(apiKey)&units=metric"
+        case .coordinate(let latitude, let longitude):
+            return "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&apiKey=\(apiKey)&units=metric"
+        }
+    }
+}
+
 class NetworkManager {
     
-    enum RequestType {
-        case cityName(city: String)
-        case coordinate(latitude: CLLocationDegrees, longitude: CLLocationDegrees)
-    }
+    static let shared = NetworkManager()
     
     var onComplition: ((CurrentWeather) -> Void)?
     
     func fetchCurrentWeather(forRequestType requestType: RequestType) {
-        var urlString = ""
+        let urlString = requestType.urlString
         
-        switch requestType {
-            
-        case .cityName(let city):
-            urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&apiKey=\(apiKey)&units=metric"
-        case .coordinate(let latitude, let longitude):
-            urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&apiKey=\(apiKey)&units=metric"
-            
-        }
+//        switch requestType {
+//            case .cityName(let city):
+//            urlString = requestType.urlString
+//                urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&apiKey=\(apiKey)&units=metric"
+//            case .coordinate(let latitude, let longitude):
+//                urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&apiKey=\(apiKey)&units=metric"
+//        }
         
         performRequest(withURLString: urlString)
     }
     
     fileprivate func performRequest(withURLString URLString: String) {
         guard let url = URL(string: URLString) else { return }
-        
-        let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: url) { data, response, error in
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 if let currentWeather = self.parseJSON(withData: data) {
                     self.onComplition?(currentWeather)
                 }
             }
-        }
+        }.resume()
         
-        task.resume()
     }
     
     fileprivate func parseJSON(withData data: Data) -> CurrentWeather? {
-        let decoder = JSONDecoder()
         
         do {
-            let currentWeatherData = try decoder.decode(CurrentWeatherData.self, from: data)
-            guard let currentWeather = CurrentWeather(currentWeatherData: currentWeatherData)
-            else { return nil }
+            let currentWeatherData = try JSONDecoder().decode(CurrentWeather.self, from: data)
+            let currentWeather = CurrentWeather(name: "Foo", main: Main(temp: 1.0, feelsLike: 1.0), weather: [Weather(id: 0)])
+           
             
             return currentWeather
             
