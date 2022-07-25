@@ -35,6 +35,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        startAnimating()
 
         locationManager.delegate = self
        
@@ -108,7 +109,7 @@ extension ViewController {
             delay: 0,
             options: [.autoreverse, .repeat]) {
                 self.weatherIconImageView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
-                self.feelsLikeView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
+                self.feelsLikeView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
                 self.cityView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
                 self.temperatureView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
                 
