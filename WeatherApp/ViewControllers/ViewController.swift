@@ -41,6 +41,7 @@ class ViewController: UIViewController {
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestLocation()
+            locationManager.startUpdatingLocation()
         }
     }
     
@@ -60,13 +61,52 @@ class ViewController: UIViewController {
     //MARK: - Fetching Data
     private func getData(requestType: RequestType) {
         // Parsing with URLSession
+        NetworkManager.shared.fetchCurrentWeather(
+            dataType: CurrentWeather.self,
+            forRequestType: requestType
+        ) { [unowned self] result in
+            switch result {
+                
+            case .success(let currentWeather):
+                self.startAnimating()
+                self.updateUI(with: currentWeather)
+            case .failure(let error):
+                self.presentUIAlertController(
+                    withTitle: "Error",
+                    andMessage: error.rawValue,
+                    style: .alert,
+                    withSearch: false,
+                    completionHandler: nil
+                )
+            }
+        }
+        
+        // Parsing with Alamofire Decodable
+                /*
+                AlamofireNetworkManager.shared.fetchCurrentWeather(
+                    forRequestType: requestType) { result in
+                        switch result {
+                        case .success(let currentWeather):
+                            self.startAnimating()
+                            self.updateUI(with: currentWeather)
+                        case .failure(let error):
+                            self.presentUIAlertController(
+                                withTitle: "Error",
+                                andMessage: error.rawValue,
+                                style: .alert,
+                                withSearch: false,
+                                completionHandler: nil
+                            )
+                        }
+                    }
+                */
+        
+        // Parsing with Alamofire with manually parsing
+        //It's just for understading how decode method works
         /*
-         NetworkManager.shared.fetchCurrentWeather(
-         dataType: CurrentWeather.self,
-         forRequestType: requestType
-         ) { [unowned self] result in
+         AlamofireNetworkManager.shared.fetchCurrentWeatherWithJSONParsing(
+         forRequestType: requestType) { result in
          switch result {
-         
          case .success(let currentWeather):
          self.startAnimating()
          self.updateUI(with: currentWeather)
@@ -78,48 +118,10 @@ class ViewController: UIViewController {
          withSearch: false,
          completionHandler: nil
          )
+         
          }
          }
          */
-        
-        // Parsing with Alamofire Decodable
-        /*
-        AlamofireNetworkManager.shared.fetchCurrentWeather(
-            forRequestType: requestType) { result in
-                switch result {
-                case .success(let currentWeather):
-                    self.startAnimating()
-                    self.updateUI(with: currentWeather)
-                case .failure(let error):
-                    self.presentUIAlertController(
-                        withTitle: "Error",
-                        andMessage: error.rawValue,
-                        style: .alert,
-                        withSearch: false,
-                        completionHandler: nil
-                    )
-                }
-            }
-        */
-        
-        // Parsing with Alamofire without automatic
-        AlamofireNetworkManager.shared.fetchCurrentWeatherWithJSONParsing(
-            forRequestType: requestType) { result in
-                switch result {
-                case .success(let currentWeather):
-                    self.startAnimating()
-                    self.updateUI(with: currentWeather)
-                case .failure(let error):
-                    self.presentUIAlertController(
-                        withTitle: "Error",
-                        andMessage: error.rawValue,
-                        style: .alert,
-                        withSearch: false,
-                        completionHandler: nil
-                    )
-                    
-                }
-            }
     }
 }
 
