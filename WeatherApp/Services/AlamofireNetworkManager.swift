@@ -34,4 +34,31 @@ class AlamofireNetworkManager {
                 }
             }
     }
+    
+    func fetchCurrentWeatherWithJSONParsing(
+        forRequestType requestType: RequestType,
+        completion: @escaping (Result<CurrentWeather, NetworkError>) -> Void
+    ) {
+        AF.request(requestType.urlString)
+            .validate()
+            .responseJSON { dataResponse in
+                switch dataResponse.result {
+                    
+                case .success(let value):
+                    guard let currentWeather = CurrentWeather.getCurrentWeather(from: value) else {
+                        DispatchQueue.main.async {
+                            completion(.failure(.decodingError))
+                        }
+                        return
+                    }
+                    DispatchQueue.main.async {
+                        completion(.success(currentWeather))
+                    }
+                case .failure(_):
+                    DispatchQueue.main.async {
+                        completion(.failure(.decodingError))
+                    }
+                }
+            }
+    }
 }

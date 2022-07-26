@@ -82,6 +82,8 @@ class ViewController: UIViewController {
          }
          */
         
+        // Parsing with Alamofire Decodable
+        /*
         AlamofireNetworkManager.shared.fetchCurrentWeather(
             forRequestType: requestType) { result in
                 switch result {
@@ -96,6 +98,26 @@ class ViewController: UIViewController {
                         withSearch: false,
                         completionHandler: nil
                     )
+                }
+            }
+        */
+        
+        // Parsing with Alamofire without automatic
+        AlamofireNetworkManager.shared.fetchCurrentWeatherWithJSONParsing(
+            forRequestType: requestType) { result in
+                switch result {
+                case .success(let currentWeather):
+                    self.startAnimating()
+                    self.updateUI(with: currentWeather)
+                case .failure(let error):
+                    self.presentUIAlertController(
+                        withTitle: "Error",
+                        andMessage: error.rawValue,
+                        style: .alert,
+                        withSearch: false,
+                        completionHandler: nil
+                    )
+                    
                 }
             }
     }
