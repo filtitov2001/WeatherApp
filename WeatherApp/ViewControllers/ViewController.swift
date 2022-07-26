@@ -11,7 +11,7 @@ import UIKit
 import CoreLocation
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var weatherIconImageView: UIImageView!
     
     @IBOutlet weak var cityLabel: UILabel!
@@ -36,15 +36,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         startAnimating()
-
+        
         locationManager.delegate = self
-       
+        
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestLocation()
         }
     }
     
-
+    
     @IBAction func searchButtonPressed(_ sender: UIButton) {
         presentUIAlertController(
             withTitle: "Enter city name",
@@ -59,25 +59,45 @@ class ViewController: UIViewController {
     
     //MARK: - Fetching Data
     private func getData(requestType: RequestType) {
-        NetworkManager.shared.fetchCurrentWeather(
-            dataType: CurrentWeather.self,
-            forRequestType: requestType
-        ) { [unowned self] result in
-            switch result {
-                
-            case .success(let currentWeather):
-                self.startAnimating()
-                self.updateUI(with: currentWeather)
-            case .failure(let error):
-                self.presentUIAlertController(
-                    withTitle: "Error",
-                    andMessage: error.rawValue,
-                    style: .alert,
-                    withSearch: false,
-                    completionHandler: nil
-                )
+        // Parsing with URLSession
+        /*
+         NetworkManager.shared.fetchCurrentWeather(
+         dataType: CurrentWeather.self,
+         forRequestType: requestType
+         ) { [unowned self] result in
+         switch result {
+         
+         case .success(let currentWeather):
+         self.startAnimating()
+         self.updateUI(with: currentWeather)
+         case .failure(let error):
+         self.presentUIAlertController(
+         withTitle: "Error",
+         andMessage: error.rawValue,
+         style: .alert,
+         withSearch: false,
+         completionHandler: nil
+         )
+         }
+         }
+         */
+        
+        AlamofireNetworkManager.shared.fetchCurrentWeather(
+            forRequestType: requestType) { result in
+                switch result {
+                case .success(let currentWeather):
+                    self.startAnimating()
+                    self.updateUI(with: currentWeather)
+                case .failure(let error):
+                    self.presentUIAlertController(
+                        withTitle: "Error",
+                        andMessage: error.rawValue,
+                        style: .alert,
+                        withSearch: false,
+                        completionHandler: nil
+                    )
+                }
             }
-        }
     }
 }
 
@@ -100,7 +120,7 @@ extension ViewController {
         cityView.layer.cornerRadius = cornerRadius
         temperatureView.layer.cornerRadius = cornerRadius
         feelsLikeView.layer.cornerRadius = cornerRadius
-
+        
     }
     
     private func startAnimating() {
@@ -113,7 +133,7 @@ extension ViewController {
                 self.cityView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
                 self.temperatureView.backgroundColor =  #colorLiteral(red: 0.9647058824, green: 0.9960784314, blue: 0.7058823529, alpha: 0.5)
                 
-        }
+            }
     }
     
     private func stopAnimating() {
@@ -124,7 +144,7 @@ extension ViewController {
                 self.cityView.backgroundColor = .clear
                 self.temperatureView.backgroundColor = .clear
                 self.feelsLikeView.backgroundColor = .clear
-        }
+            }
     }
 }
 

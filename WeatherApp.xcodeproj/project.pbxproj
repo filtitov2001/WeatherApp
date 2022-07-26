@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B7B4D1628900F6000B8884D /* AlamofireNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7B4D1528900F6000B8884D /* AlamofireNetworkManager.swift */; };
 		2BB55344285888EE00AF4B8A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB55343285888EE00AF4B8A /* AppDelegate.swift */; };
 		2BB55346285888EE00AF4B8A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB55345285888EE00AF4B8A /* SceneDelegate.swift */; };
 		2BB55348285888EE00AF4B8A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB55347285888EE00AF4B8A /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2B7B4D1528900F6000B8884D /* AlamofireNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlamofireNetworkManager.swift; sourceTree = "<group>"; };
 		2BB55340285888EE00AF4B8A /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BB55343285888EE00AF4B8A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2BB55345285888EE00AF4B8A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				2BB553602858A0FD00AF4B8A /* NetworkManager.swift */,
+				2B7B4D1528900F6000B8884D /* AlamofireNetworkManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -148,7 +151,6 @@
 				B60860EF765F8D490D83100A /* Pods-WeatherApp.debug.xcconfig */,
 				DB142C12D9F5987E7F4FFDD9 /* Pods-WeatherApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -280,6 +282,7 @@
 				2BB553612858A0FD00AF4B8A /* NetworkManager.swift in Sources */,
 				2BB55346285888EE00AF4B8A /* SceneDelegate.swift in Sources */,
 				2BB5535E28588E5900AF4B8A /* Extension + UIViewController.swift in Sources */,
+				2B7B4D1628900F6000B8884D /* AlamofireNetworkManager.swift in Sources */,
 				2BB55365285904E600AF4B8A /* CurrentWeather.swift in Sources */,
 				2BB553632858A2A200AF4B8A /* API.swift in Sources */,
 			);
