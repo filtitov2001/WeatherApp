@@ -23,6 +23,8 @@ Application supports light/dark mode appearance.
 
 - [Tech stack](#tech-stack)
 
+- [Run locally](#run-locally)
+
 - [License](#copyright)
 
 ## Demo
@@ -58,6 +60,28 @@ Application supports light/dark mode appearance.
 * Alamofire
 * OpenWeatherAPI
 * Core Location
+
+## Run locally
+
+1. Install project from GitHub
+
+```bash
+  git clone https://github.com/filtitov2001/WeatherApp/
+```
+2. Go to app folder
+```bash
+  cd WeatherApp
+```
+3. Install dependency 
+```bash
+  pod install
+```
+4. Open project
+```bash
+  open WeatherApp.xcworkspace
+```
+5. App API Key of OpenWeather in apiKey property in ``` info.plist ```
+
 
 ## Copyright
 
